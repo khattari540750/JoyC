@@ -10,34 +10,14 @@
 class OcutopusController : public BaseController
 {
 public:
-    void setup()
-    {};
+    void setup();
+    void begin();
+    void loop();
+    void end();
 
-
-    void begin()
-    {
-    };
-
-
-    void loop()
-    {
-        if (joyc->btn0 && joyc->btn1) {
-            joyc->setLEDColor(0x00ffe8);
-        } else if (joyc->btn0) {
-            joyc->setLEDColor(0xff0000);
-        } else if (joyc->btn1) {
-            joyc->setLEDColor(0x0000ff);
-        } else {
-            joyc->setLEDColor(0x00ff00);
-        }
-    };
-
-
-    void end()
-    {
-        esp_now_unregister_send_cb();
-        esp_now_unregister_recv_cb();
-    };
+private:
+    static void onDataSend(const uint8_t *mac_addr, esp_now_send_status_t status);
+    static void onDataRecv(const uint8_t *mac_addr, const uint8_t *data, int data_len);
 };
 
 

@@ -12,6 +12,7 @@
 class BaseController 
 {
 protected:
+    uint8_t destAddress[6];
     JoyC* joyc;
     
 public:

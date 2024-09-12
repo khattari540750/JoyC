@@ -14,6 +14,17 @@ ControllerChanger controllerChanger;
 
 void setup()
 {
+	// serial
+	Serial.begin(115200);
+
+	// display
+	M5.Display.setRotation(0);
+	M5.Display.setTextFont(1);
+	M5.Display.setTextSize(1);
+  	M5.Display.setCursor(0, 0);
+	M5.Display.fillScreen(BLACK);
+  	M5.Display.setTextColor(WHITE);
+	
 	// M5 & StickCP2
 	auto cfg = M5.config();
 	StickCP2.begin(cfg);
@@ -21,6 +32,15 @@ void setup()
 	// esp_now
 	WiFi.mode(WIFI_STA);
   	WiFi.disconnect();
+	if (esp_now_init() == ESP_OK) {
+    	Serial.println("ESPNow Init Success");
+		M5.Lcd.println("ESPNow Init Success");
+  	} else {
+    	Serial.println("ESPNow Init Failed");
+		M5.Lcd.println("ESPNow Init Failed");
+		delay(3000);
+		ESP.restart();
+  	}
 
 	// joyc
 	joyc.begin();
