@@ -34,10 +34,12 @@ void setup()
   	WiFi.disconnect();
 	if (esp_now_init() == ESP_OK) {
     	Serial.println("ESPNow Init Success");
-		M5.Lcd.println("ESPNow Init Success");
+		M5.Display.println("ESPNow Init Success");
+		Serial.println(WiFi.macAddress());
+		M5.Display.println(WiFi.macAddress());
   	} else {
     	Serial.println("ESPNow Init Failed");
-		M5.Lcd.println("ESPNow Init Failed");
+		M5.Display.println("ESPNow Init Failed");
 		delay(3000);
 		ESP.restart();
   	}

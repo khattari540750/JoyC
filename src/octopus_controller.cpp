@@ -18,17 +18,18 @@ void OcutopusController::begin()
     esp_now_peer_info_t peerInfo;
     memset(&peerInfo, 0, sizeof(peerInfo));
     memcpy(peerInfo.peer_addr, destAddress, 6);
-    if (esp_now_add_peer(&peerInfo) != ESP_OK) { //「esp_now_add_peer」で、espnowのピアリストにpeerInfo構造体に書かれた設定を追加する。成功するとESP_OKが返るので、それがうまくいかなかったときの処理が書いてある
+    peerInfo.encrypt = false;
+    if (esp_now_add_peer(&peerInfo) != ESP_OK) {
         Serial.println("Failed to add peer");
-        M5.Lcd.println("Failed to add peer");
+        M5.Display.println("Failed to add peer");
         return;
-    } else {
-        Serial.println("Pair success");
-        M5.Lcd.println("Pair success");
     }
+    Serial.println("Pair success");
+    M5.Display.println("Pair success");
     
-    esp_now_register_send_cb(onDataSend);
-    esp_now_register_recv_cb(onDataRecv);
+    // set callback
+    //esp_now_register_send_cb(onDataSend);
+    //esp_now_register_recv_cb(onDataRecv);
 }
 
 
@@ -43,13 +44,29 @@ void OcutopusController::loop()
     } else {
         joyc->setLEDColor(0x00ff00);
     }
+    if(esp_now_is_peer_exist(destAddress)) {
+        sendData.rightX = joyc->getX(0);
+        sendData.rightY = joyc->getY(0);
+        sendData.rightPress = joyc->getY(0);
+        sendData.leftX = joyc->getX(1);
+        sendData.leftY = joyc->getY(1);
+        sendData.leftPress = joyc->getY(1);
+        esp_now_send(destAddress, (uint8_t*)&sendData, sizeof(sendData));
+    }
+    sleep(10);
 }
 
 
 void OcutopusController::end()
 {
-    esp_now_unregister_send_cb();
-    esp_now_unregister_recv_cb();
+    // delete peer
+    if(esp_now_is_peer_exist(destAddress)) {
+        esp_now_del_peer(destAddress);
+    }
+    
+    // remove callback
+    //esp_now_unregister_send_cb();
+    //esp_now_unregister_recv_cb();
 }
 
 
