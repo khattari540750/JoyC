@@ -3,6 +3,7 @@
 #include <esp_now.h>
 #include <WiFi.h>
 #include "controller_changer.h"
+#include "my_controller.h"
 #include "octopus_controller.h"
 
 
@@ -18,12 +19,12 @@ void setup()
 	Serial.begin(115200);
 
 	// display
-	M5.Display.setRotation(0);
-	M5.Display.setTextFont(1);
-	M5.Display.setTextSize(1);
-  	M5.Display.setCursor(0, 0);
-	M5.Display.fillScreen(BLACK);
-  	M5.Display.setTextColor(WHITE);
+	StickCP2.Display.setRotation(0);
+	StickCP2.Display.setTextFont(1);
+	StickCP2.Display.setTextSize(1);
+  	StickCP2.Display.setCursor(0, 0);
+	StickCP2.Display.fillScreen(BLACK);
+  	StickCP2.Display.setTextColor(WHITE);
 	
 	// M5 & StickCP2
 	auto cfg = M5.config();
@@ -34,22 +35,26 @@ void setup()
   	WiFi.disconnect();
 	if (esp_now_init() == ESP_OK) {
     	Serial.println("ESPNow Init Success");
-		M5.Display.println("ESPNow Init Success");
+		StickCP2.Display.println("ESPNow Init Success");
 		Serial.println(WiFi.macAddress());
-		M5.Display.println(WiFi.macAddress());
+		StickCP2.Display.println(WiFi.macAddress());
   	} else {
     	Serial.println("ESPNow Init Failed");
-		M5.Display.println("ESPNow Init Failed");
+		StickCP2.Display.println("ESPNow Init Failed");
 		delay(3000);
 		ESP.restart();
   	}
+	delay(3000);
 
 	// joyc
 	joyc.begin();
 	controllerChanger.setJoyc(&joyc);
 
-	// add
+	// add controllers
+	controllerChanger.addController(new MyController());
 	controllerChanger.addController(new OcutopusController());
+
+	// changer setup
 	controllerChanger.setup();
 }
 
@@ -58,5 +63,8 @@ void loop()
 { 
 	StickCP2.update();
 	joyc.update();
+	//if (StickCP2.BtnA.wasReleasefor(1000) ) {
+    // 	controllerChanger.changeNextController();
+  	// }
 	controllerChanger.loop();
 }

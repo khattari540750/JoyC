@@ -12,8 +12,8 @@
 class ControllerChanger
 {
 public:  // constructor & destructor
-  ControllerChanger();
-  ~ControllerChanger();
+    ControllerChanger();
+    ~ControllerChanger();
 
 public: // basic functions
     void setup();
