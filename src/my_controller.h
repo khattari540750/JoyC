@@ -16,7 +16,7 @@ public:
     void end();
 
 private:
-    char info[50];
+    char info[25];
 };
 
 

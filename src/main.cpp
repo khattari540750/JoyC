@@ -63,8 +63,8 @@ void loop()
 { 
 	StickCP2.update();
 	joyc.update();
-	//if (StickCP2.BtnA.wasReleasefor(1000) ) {
-    // 	controllerChanger.changeNextController();
-  	// }
+	if ( M5.BtnA.wasReleased() ) {
+    	controllerChanger.changeNextController();
+  	}
 	controllerChanger.loop();
 }

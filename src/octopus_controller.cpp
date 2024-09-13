@@ -10,25 +10,28 @@ void OcutopusController::setup()
 
 void OcutopusController::begin()
 {
+    // display init
+    StickCP2.Display.setTextFont(1);
+	StickCP2.Display.setTextSize(1);
+  	StickCP2.Display.setCursor(0, 0);
+	StickCP2.Display.fillScreen(GREEN);
+  	StickCP2.Display.setTextColor(BLACK);
+    
     // begin esp-now connection
     if(beginConnection()) {
         Serial.println("Pair success");
-        M5.Display.println("Pair success");
+        StickCP2.Display.println("Pair success");
     } else {
         Serial.println("Failed to add peer");
-        M5.Display.println("Failed to add peer");
+        StickCP2.Display.println("Failed to add peer");
         return;
     }
     
     // set callback
     esp_now_register_recv_cb(onDataRecv);
 
-    // display init
-    M5.Display.setTextFont(1);
-	M5.Display.setTextSize(1);
-  	M5.Display.setCursor(0, 0);
-	M5.Display.fillScreen(GREEN);
-  	M5.Display.setTextColor(WHITE);
+    // joy stic
+    joyc->setLEDColor(0x000000);
 }
 
 
