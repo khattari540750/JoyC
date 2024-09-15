@@ -42,7 +42,8 @@ void MyController::loop()
     sprintf(info, " Btn:%u  ", joyc->getPress(1));
     StickCP2.Display.println(info);
     StickCP2.Display.println("");
-    sprintf(info, "Bat:%u  ", StickCP2.Power.getBatteryLevel());
+    double voltage = (double)StickCP2.Power.getBatteryVoltage() / 1000.0; // mVをVに変換
+    sprintf(info, "Bat:%.2fV  ", voltage);
     StickCP2.Display.println(info);
     StickCP2.Display.setTextSize(1);
     StickCP2.Display.println("");

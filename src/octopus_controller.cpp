@@ -62,6 +62,8 @@ void OcutopusController::loop()
   	StickCP2.Display.printf(" accel: %u \n", recvData.accel);
   	StickCP2.Display.printf(" strL: %u \n", recvData.steeringL);
   	StickCP2.Display.printf(" strR: %u \n", recvData.steeringR);
+
+    delay(5);
   }
 }
 
