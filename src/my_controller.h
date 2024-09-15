@@ -4,6 +4,7 @@
 
 
 #include "base_controller.h"
+#include "WiFi.h"
 
 
 

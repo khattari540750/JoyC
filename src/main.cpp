@@ -16,7 +16,7 @@ ControllerChanger controllerChanger;
 void setup()
 {
 	// serial
-	Serial.begin(115200);
+	Serial.begin(BAUD_RATE);
 
 	// display
 	StickCP2.Display.setRotation(0);
